@@ -1,5 +1,86 @@
-[gd_scene format=3 uid="uid://du2dvhillrs30"]
+[gd_scene load_steps=12 format=3 uid="uid://du2dvhillrs30"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_8saaa"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8xp5j"]
+size = Vector3(10, 0.1, 10)
+
+[sub_resource type="MeshTexture" id="MeshTexture_8saaa"]
+
+[sub_resource type="MeshTexture" id="MeshTexture_8xp5j"]
+
+[sub_resource type="MeshTexture" id="MeshTexture_u7yy0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8saaa"]
+albedo_color = Color(0.713726, 1, 1, 1)
+albedo_texture = SubResource("MeshTexture_8saaa")
+albedo_texture_force_srgb = true
+metallic = 1.0
+metallic_specular = 0.23
+metallic_texture = SubResource("MeshTexture_8xp5j")
+roughness_texture = SubResource("MeshTexture_u7yy0")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_lnego"]
+size = Vector2(10, 10)
+subdivide_width = 1
+subdivide_depth = 1
+
+[sub_resource type="Skin" id="Skin_lnego"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8saaa"]
+
+[sub_resource type="Sky" id="Sky_8saaa"]
+
+[sub_resource type="Environment" id="Environment_8xp5j"]
+background_mode = 1
+background_color = Color(0.318418, 0.204858, 0.40203, 1)
+background_energy_multiplier = 2.01
+sky = SubResource("Sky_8saaa")
+ambient_light_color = Color(0.00078979, 0.0570943, 0.353419, 1)
+ambient_light_energy = 2.0
+glow_enabled = true
 
 [node name="Node3D" type="Node3D"]
 
-[node name="Node" type="Node" parent="."]
+[node name="Floor3D" type="StaticBody3D" parent="."]
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+physics_material_override = SubResource("PhysicsMaterial_8saaa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_8xp5j")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor3D/CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_8saaa")
+custom_aabb = AABB(10, 0.1, 10, 0, 0, 0)
+ignore_occlusion_culling = true
+visibility_range_begin = 248.24
+visibility_range_begin_margin = 124.12
+visibility_range_end = 744.73
+visibility_range_end_margin = 248.24
+mesh = SubResource("PlaneMesh_lnego")
+skin = SubResource("Skin_lnego")
+
+[node name="Player" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.26217, 0)
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="Player"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0924158, 0)
+shape = SubResource("CapsuleShape3D_8saaa")
+debug_color = Color(0, 0.996595, 0.992475, 0.42)
+
+[node name="Camera3D" type="Camera3D" parent="Player/CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000852108, -0.0262558, 0.00500566)
+environment = SubResource("Environment_8xp5j")
+current = true
+fov = 119.3
+near = 0.004
+far = 4000.05
